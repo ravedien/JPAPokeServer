@@ -12,6 +12,6 @@ import com.core.jpa.pokemon.model.Pokemon;
 @Repository
 public interface PokemonRepository extends CrudRepository<Pokemon, Integer>{
 	
-	List<Pokemon> findById(int id);
+	List<Pokemon> findByPokeId(int id);
 	
 }

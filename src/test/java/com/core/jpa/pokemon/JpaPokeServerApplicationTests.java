@@ -1,5 +1,8 @@
 package com.core.jpa.pokemon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -8,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.core.jpa.pokemon.model.PokeType;
 import com.core.jpa.pokemon.model.Pokemon;
+import com.core.jpa.pokemon.service.PokeTypeRepository;
 import com.core.jpa.pokemon.service.PokemonRepository;
 
 @RunWith(SpringRunner.class)
@@ -18,18 +23,20 @@ public class JpaPokeServerApplicationTests {
 	@Autowired
 	PokemonRepository pokemonRepository;
 	
+	@Autowired
+	PokeTypeRepository pokeTypeRepository;
+	
 	private static final Logger log = LoggerFactory.getLogger(JpaPokeServerApplicationTests.class);
 	
 	@Test
 	public void savePokemon() {
-		pokemonRepository.save(createPokemonDependencies());
-
-		// fetch all customers
-		log.info("Customers found with findAll():");
-		log.info("-------------------------------");
-		for (Pokemon pokemon : pokemonRepository.findAll()) {
-			log.info(pokemon.toString());
-		}
+		PokeType pokeType = createPokemonType();
+		pokeTypeRepository.save(pokeType);
+		
+		Pokemon haunter = createPokemonDependencies();
+		haunter.setPokeType(pokeType);
+		
+		pokemonRepository.save(haunter);
 		
 	}
 
@@ -41,12 +48,9 @@ public class JpaPokeServerApplicationTests {
 		return pokemon;
 	}
 
-//	private List<Type> createPokemonTypeList() {
-//		List<Type> typeList = new ArrayList<Type>();
-//		typeList.add(new Type("Ghost"));
-//		typeList.add(new Type("Poison"));
-//		return typeList;
-//	}
+	private PokeType createPokemonType() {
+		return new PokeType("Ghost");
+	}
 //
 //	private List<Weakness> createPokemonWeaknessList() {
 //		List<Weakness> weaknessList = new ArrayList<Weakness>();

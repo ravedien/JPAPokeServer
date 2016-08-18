@@ -1,26 +1,26 @@
 package com.core.jpa.pokemon.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-
-
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Pokemon {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private int pokeId;
 	
 	private String name;
 	
-//	private List<Type> TypeList;
-//	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="typeId",referencedColumnName="typeId")
+	private PokeType pokeType;
+	
 //	private List<Weakness> weaknessList;
 //	
 //	private List<FastAttack> fastAttackList;
@@ -36,14 +36,22 @@ public class Pokemon {
 	@Override
     public String toString() {
         return String.format(
-                "Pokemon[id=%d, name='%s', weight='%s', height='%s']",
-                id, name, weight, height);
+                "Pokemon[pokeId=%d, name='%s', weight='%s', height='%s']",
+                pokeId, name, weight, height);
     }
 	
 	public Pokemon() {
 		super();
 	}
-	
+
+	public Pokemon(String name, PokeType pokeType, double weight, double height) {
+		super();
+		this.name = name;
+		this.pokeType = pokeType;
+		this.weight = weight;
+		this.height = height;
+	}
+
 	public Pokemon(String name, double weight, double height) {
 		super();
 		this.name = name;
@@ -51,12 +59,12 @@ public class Pokemon {
 		this.height = height;
 	}
 
-	public int getId() {
-		return id;
+	public int getPokeId() {
+		return pokeId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setPokeId(int pokeId) {
+		this.pokeId = pokeId;
 	}
 
 	public String getName() {
@@ -67,29 +75,13 @@ public class Pokemon {
 		this.name = name;
 	}
 
-//	public List<Type> getTypeList() {
-//		return TypeList;
-//	}
-//
-//	public void setTypeList(List<Type> typeList) {
-//		TypeList = typeList;
-//	}
-//
-//	public List<Weakness> getWeaknessList() {
-//		return weaknessList;
-//	}
-//
-//	public void setWeaknessList(List<Weakness> weaknessList) {
-//		this.weaknessList = weaknessList;
-//	}
-//
-//	public List<FastAttack> getFastAttackList() {
-//		return fastAttackList;
-//	}
-//
-//	public void setFastAttackList(List<FastAttack> fastAttackList) {
-//		this.fastAttackList = fastAttackList;
-//	}
+	public PokeType getPokeType() {
+		return pokeType;
+	}
+
+	public void setPokeType(PokeType pokeType) {
+		this.pokeType = pokeType;
+	}
 
 	public double getWeight() {
 		return weight;
@@ -106,13 +98,5 @@ public class Pokemon {
 	public void setHeight(double height) {
 		this.height = height;
 	}
-
-//	public EvolutionRequirement getEvolutionRequirement() {
-//		return evolutionRequirement;
-//	}
-//
-//	public void setEvolutionRequirement(EvolutionRequirement evolutionRequirement) {
-//		this.evolutionRequirement = evolutionRequirement;
-//	}
 
 }
